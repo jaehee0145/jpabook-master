@@ -5,3 +5,4 @@
 [Chap03 영속성 관리](/summary/chap03.md)  
 [Chap04 엔티티 매핑](/summary/chap04.md)  
 [Chap05 연관관계 매핑 기초](/summary/chap05.md)  
+[Chap06 다양한 연관관계 매핑](/summary/chap06.md)  
