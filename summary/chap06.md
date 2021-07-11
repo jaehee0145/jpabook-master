@@ -70,10 +70,59 @@
     
     
 ## 6.4 다대다 [N:N]
-- 관계형 디비는 정규환된 테이블 2개로 다대다 관계를 표현할 수 없다. 
-- 중간에 연결 테이블을 추가해야 한다.  
+- 관계형 디비
+    - 정규환된 테이블 2개로 다대다 관계를 표현할 수 없다. 
+    - 연결 테이블을 추가해서 다대다 관계를 일대다, 다대일 관계로 풀어낼 수 있다.  
+- 객체 
+    - 테이블과 다르게 객체2개로 다대다 관계를 만들 수 있다. 
+    - @ManyToMany  
+1. 다대다: 단방향  
+    - @JoinTable 을 사용해서 연결테이블을 바로 매핑 
+    ```java
+    @Entity
+   public class Member {
+       @Id
+       @Column(name = "MEMBER_ID")
+       private String id;
+   
+       private String username;
+   
+       @ManyToMany
+       @JoinTable(name = "MEMBER_PRODUCT",     // 연결 테이블 지정
+                   joinColumns = @JoinColumn(name = "MEMBER_ID"),  //현재 방향인 회원과 매핑할 컬럼
+                   inverseJoinColumns = @JoinColumn(name = "PRODUCT_ID")) // 반대 방향
+       private List<Product> products = new ArrayList<>();       
+   }  
+   
+2. 다대다: 양방향  
+    - 역방향도 @ManyToMany 사용 
+    - 원하는 곳에 mappedBy로 연관관계 주인 지정  
+    - 연관관계 편의 메소드를 추가하는 것이 좋다 
+    ```java
+    public void addProduct(Product product) {
+       ...
+       products.add(product);
+       product.getMembers.add(this);
+   }
 
-
+3. 다대다: 매핑의 한계와 극복, 연결 엔티티 사용  
+- 실무에서는 연결 테이블에 추가로 칼럼이 필요하고 기존 엔티티에서 추가한 칼럼을 매핑할 수 없다.  
+- 엔티티를 다대일, 일대다 관계로 풀어줄 연결 엔티티가 필요하다.  
+- 연결 엔티티   
+    - 복합 기본키 
+        - 각 엔티티의 기본키로 이루어진 복합 기본키를 사용하려면 별도의 식별자 클래스를 만들어야 한다.  
+        - 복잡한 방법
+        
+4. 다대다: 새로운 기본키 사용  
+    - 추천하는 기본키 생성 전략은 디비에서 생성해주는 대리키를 Long값으로 사용
+        - 간편하고 영구히 쓸수 있고 비즈니스에 의존적이지 않다. 
+        - ORM 매핑시 복합 키를 만들지 않아도 되므로 간단   
+5. 다대다 연관관계 정리  
+    - 일대일, 다대일 관계로 풀기 위해 식별자를 어떻게 구성할지 선택해야 한다.  
+        - 식별관계: 받아온 식별자를 기본키 + 외래키로 사용 
+        - 비식별관계: 받아온 식별자는 외래키로, 새로운 식별자 추가  
+    - 비식별 관계를 추천  
+  
 
 
 
