@@ -6,3 +6,4 @@
 [Chap04 엔티티 매핑](/summary/chap04.md)  
 [Chap05 연관관계 매핑 기초](/summary/chap05.md)  
 [Chap06 다양한 연관관계 매핑](/summary/chap06.md)  
+[Chap07 고급 매핑](/summary/chap07.md)  
